@@ -8,13 +8,16 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { Movie } from './entities/movie.entity';
+import { MoviesService } from './movies.service';
 
 // url의 entry point를 컨트롤
 @Controller('movies')
 export class MoviesController {
+  constructor(private readonly moviesservice: MoviesService) {}
   @Get()
-  getAll() {
-    return 'This will return all movies';
+  getAll(): Movie[] {
+    return this.moviesservice.getAll();
   }
 
   // 'search'가 get(':id')보다 밑에 있으면 'search'를 id로 판단함 / expressjs, Nestjs 동일
@@ -24,18 +27,18 @@ export class MoviesController {
   }
 
   @Get(':id')
-  getOne(@Param('id') movieId: string) {
-    return `This will return one movie with the id: ${movieId}`;
+  getOne(@Param('id') movieId: string): Movie {
+    return this.moviesservice.getOne(movieId);
   }
 
   @Post()
   create(@Body() movieData) {
-    return movieData;
+    return this.moviesservice.create(movieData);
   }
 
   @Delete(':id')
   remove(@Param('id') movieId: string) {
-    return `This will delete a movie with the id: ${movieId}`;
+    return this.moviesservice.deleteOne(movieId);
   }
 
   @Patch(':id')
