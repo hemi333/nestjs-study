@@ -12,6 +12,8 @@ export class MoviesService {
   }
 
   getOne(id: number): Movie {
+    console.log('id', typeof id);
+
     // string을 number로 바꾸는 방법 : +id, parseInt(id)
     const movie = this.movies.find((movie) => movie.id === id);
     if (!movie) {
