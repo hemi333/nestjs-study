@@ -7,8 +7,14 @@ import { Todo } from './todo.entity';
 export class TodoController {
   // todoService를 DI
   constructor(private todoService: TodoService) {}
+
   @Post()
   async createTodo(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
     return;
+  }
+
+  @Get()
+  async getTodo(): Promise<Todo[]> {
+    return this.todoService.getTodos();
   }
 }
