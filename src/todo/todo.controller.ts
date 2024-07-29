@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './create-todo.dto';
 import { Todo } from './todo.entity';
@@ -16,5 +16,10 @@ export class TodoController {
   @Get()
   async getTodo(): Promise<Todo[]> {
     return this.todoService.getTodos();
+  }
+
+  @Get('/:id')
+  async getTodoById(@Param('id') id: string): Promise<Todo> {
+    return this.todoService.getTodoById(id);
   }
 }

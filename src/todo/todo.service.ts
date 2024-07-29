@@ -11,6 +11,10 @@ export class TodoService {
     return this.todoRepository.find();
   }
 
+  async getTodoById(id: string): Promise<Todo> {
+    return this.todoRepository.findOne({ where: { id: id } });
+  }
+
   async create(createTodoDto: CreateTodoDto) {
     const { title, description, status, dueDate } = createTodoDto;
 
