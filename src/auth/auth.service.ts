@@ -2,14 +2,19 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { CredentialsDto } from './credential.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private jwtService: JwtService,
+  ) {}
 
   async signUp(credentialDto: CredentialsDto): Promise<void> {
     const { username, password } = credentialDto;
@@ -34,6 +39,21 @@ export class AuthService {
       } else {
         throw new InternalServerErrorException();
       }
+    }
+  }
+
+  async signIn(
+    credentialDto: CredentialsDto,
+  ): Promise<{ accessToken: string }> {
+    const { username, password } = credentialDto;
+    const user = await this.userRepository.findOne({ where: { username } });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const payload = { username };
+      const accessToken: string = await this.jwtService.sign(payload);
+      return { accessToken };
+    } else {
+      throw new UnauthorizedException('Please check your password');
     }
   }
 }
