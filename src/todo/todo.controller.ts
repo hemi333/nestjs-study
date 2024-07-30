@@ -7,12 +7,14 @@ import {
   Body,
   Param,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './create-todo.dto';
 import { SearchTodoDto } from './search-todo.dto';
 import { Todo } from './todo.entity';
 import { UpdateTodoStatusDto } from './update-todo-status.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('todo')
 export class TodoController {
@@ -25,6 +27,7 @@ export class TodoController {
   }
 
   @Get()
+  @UseGuards(AuthGuard())
   async getTodos(@Query() searchDto: SearchTodoDto): Promise<Todo[]> {
     return this.todoService.getTodos(searchDto);
   }
