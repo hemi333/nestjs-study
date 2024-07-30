@@ -12,7 +12,7 @@ import { TodoService } from './todo.service';
 import { CreateTodoDto } from './create-todo.dto';
 import { SearchTodoDto } from './search-todo.dto';
 import { Todo } from './todo.entity';
-import { TodoStatus } from './todo-status.enum';
+import { UpdateTodoStatusDto } from './update-todo-status.dto';
 
 @Controller('todo')
 export class TodoController {
@@ -42,8 +42,9 @@ export class TodoController {
   @Patch('/:id/status')
   async updateTodoStatusById(
     @Param('id') id: string,
-    @Body('status') status: TodoStatus,
+    @Body('status') updateTodoStatusDto: UpdateTodoStatusDto,
   ): Promise<Todo> {
+    const { status } = updateTodoStatusDto;
     return this.todoService.updateTaskStatusById(id, status);
   }
 }

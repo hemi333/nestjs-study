@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { TodoModule } from './todo/todo.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Todo } from './todo/todo.entity';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -19,6 +20,11 @@ import { Todo } from './todo/todo.entity';
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {}
