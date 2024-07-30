@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { TodoRepository } from './todo.repository';
 import { CreateTodoDto } from './create-todo.dto';
+import { SearchTodoDto } from './search-todo.dto';
 import { Todo } from './todo.entity';
 
 @Injectable()
 export class TodoService {
   constructor(private todoRepository: TodoRepository) {}
 
-  async getTodos(): Promise<Todo[]> {
-    return this.todoRepository.find();
+  async getTodos(searchTodoDto: SearchTodoDto): Promise<Todo[]> {
+    return this.todoRepository.getTodos(searchTodoDto);
   }
 
   async getTodoById(id: string): Promise<Todo> {

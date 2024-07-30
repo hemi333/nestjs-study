@@ -22,7 +22,7 @@ export class Todo {
 
   // 'date' 타입 사용
   @Column('date', {
-    default: () => `CURRENT_DATE + INTERVAL '7 days`, // 현재 날짜에서 7일 뒤로 설정
+    default: () => `CURRENT_DATE + INTERVAL '7 days'`, // 현재 날짜에서 7일 뒤로 설정
   })
   dueDate: Date;
 

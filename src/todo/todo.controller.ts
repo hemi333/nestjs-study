@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './create-todo.dto';
+import { SearchTodoDto } from './search-todo.dto';
 import { Todo } from './todo.entity';
 
 @Controller('todo')
@@ -10,12 +11,12 @@ export class TodoController {
 
   @Post()
   async createTodo(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
-    return;
+    return this.todoService.create(createTodoDto);
   }
 
   @Get()
-  async getTodo(): Promise<Todo[]> {
-    return this.todoService.getTodos();
+  async getTodos(@Query() searchDto: SearchTodoDto): Promise<Todo[]> {
+    return this.todoService.getTodos(searchDto);
   }
 
   @Get('/:id')
