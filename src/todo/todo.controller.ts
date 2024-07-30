@@ -17,6 +17,7 @@ import { UpdateTodoStatusDto } from './update-todo-status.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('todo')
+@UseGuards(AuthGuard())
 export class TodoController {
   // todoService를 DI
   constructor(private todoService: TodoService) {}
@@ -27,7 +28,6 @@ export class TodoController {
   }
 
   @Get()
-  @UseGuards(AuthGuard())
   async getTodos(@Query() searchDto: SearchTodoDto): Promise<Todo[]> {
     return this.todoService.getTodos(searchDto);
   }
