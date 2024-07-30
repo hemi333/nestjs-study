@@ -3,6 +3,7 @@ import { TodoRepository } from './todo.repository';
 import { CreateTodoDto } from './create-todo.dto';
 import { SearchTodoDto } from './search-todo.dto';
 import { Todo } from './todo.entity';
+import { TodoStatus } from './todo-status.enum';
 
 @Injectable()
 export class TodoService {
@@ -14,6 +15,16 @@ export class TodoService {
 
   async getTodoById(id: string): Promise<Todo> {
     return this.todoRepository.findOne({ where: { id: id } });
+  }
+
+  async updateTaskStatusById(id: string, status: TodoStatus): Promise<Todo> {
+    const todo: Todo = await this.getTodoById(id);
+    if (!todo) {
+      throw new NotFoundException(`Todo with ID "${id}" not found`);
+    }
+    todo.status = status;
+    await this.todoRepository.save(todo);
+    return todo;
   }
 
   async deleteTodoById(id: string): Promise<void> {
