@@ -1,7 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { TodoModule } from './todo/todo.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Todo } from './todo/todo.entity';
+import { User } from './auth/user.entity';
+import { APP_PIPE } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,10 +18,16 @@ import { Todo } from './todo/todo.entity';
       database: 'testdb',
       autoLoadEntities: true,
       synchronize: true,
-      entities: [Todo],
+      entities: [Todo, User],
     }),
+    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {}
