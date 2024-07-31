@@ -4,6 +4,7 @@ import { CreateTodoDto } from './create-todo.dto';
 import { SearchTodoDto } from './search-todo.dto';
 import { Todo } from './todo.entity';
 import { TodoStatus } from './todo-status.enum';
+import { User } from 'src/auth/user.entity';
 
 @Injectable()
 export class TodoService {
@@ -35,7 +36,7 @@ export class TodoService {
     this.todoRepository.delete(id);
   }
 
-  async create(createTodoDto: CreateTodoDto) {
+  async create(createTodoDto: CreateTodoDto, user: User): Promise<Todo> {
     const { title, description, status, dueDate } = createTodoDto;
 
     let finalDueDate = dueDate;
@@ -50,6 +51,7 @@ export class TodoService {
       description,
       status,
       dueDate: finalDueDate,
+      user,
     });
   }
 }

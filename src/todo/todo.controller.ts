@@ -15,6 +15,7 @@ import { SearchTodoDto } from './search-todo.dto';
 import { Todo } from './todo.entity';
 import { UpdateTodoStatusDto } from './update-todo-status.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decrator';
 
 @Controller('todo')
 @UseGuards(AuthGuard())
@@ -23,8 +24,11 @@ export class TodoController {
   constructor(private todoService: TodoService) {}
 
   @Post()
-  async createTodo(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
-    return this.todoService.create(createTodoDto);
+  async createTodo(
+    @Body() createTodoDto: CreateTodoDto,
+    @GetUser() user,
+  ): Promise<Todo> {
+    return this.todoService.create(createTodoDto, user);
   }
 
   @Get()
