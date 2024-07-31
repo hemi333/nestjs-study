@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { TodoStatus } from './todo-status.enum';
 import { User } from 'src/auth/user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Todo {
@@ -31,5 +32,6 @@ export class Todo {
   createdAt: Date;
 
   @ManyToOne((_type) => User, (user) => user.todos, { eager: false })
+  @Exclude({ toPlainOnly: true })
   user: User;
 }
