@@ -3,8 +3,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
 import { TodoStatus } from './todo-status.enum';
+import { User } from 'src/auth/user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Todo {
@@ -20,7 +23,6 @@ export class Todo {
   @Column()
   status: TodoStatus;
 
-  // 'date' 타입 사용
   @Column('date', {
     default: () => `CURRENT_DATE + INTERVAL '7 days'`, // 현재 날짜에서 7일 뒤로 설정
   })
@@ -28,4 +30,8 @@ export class Todo {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @ManyToOne((_type) => User, (user) => user.todos, { eager: false })
+  @Exclude({ toPlainOnly: true })
+  user: User;
 }

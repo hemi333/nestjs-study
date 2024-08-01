@@ -1,7 +1,10 @@
+import { Exclude } from 'class-transformer';
+import { Todo } from 'src/todo/todo.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -14,8 +17,12 @@ export class User {
   username: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany((entityType) => Todo, (todo) => todo.user, { eager: false })
+  todos: Todo[];
 }
